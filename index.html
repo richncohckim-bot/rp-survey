@@ -156,7 +156,7 @@ footer{padding-block:0 40px;color:var(--muted);font-size:12px;text-align:center}
     <div class="eyebrow">전략HR팀 · 사전 설문</div>
     <h1>2027 RP 주임단 워크숍 사전 설문</h1>
     <p class="lead">2027년 1월 RP 주임단 워크숍을 앞두고 현장 업무 현황과 의견을 듣고자 합니다. 응답은 익명으로 처리되며, 결과는 워크숍 조별 토의 자료 및 근무환경 개선을 목적으로 활용됩니다.</p>
-    <div class="meta"><span class="chip">약 10분 소요</span><span class="chip">익명 응답</span><span class="chip">같은 기기에서 수정 가능</span></div>
+    <div class="meta"><span class="chip">약 12분 소요</span><span class="chip">익명 응답</span><span class="chip">같은 기기에서 수정 가능</span></div>
     <div class="notice" id="notice" hidden></div>
   </header>
 
@@ -201,31 +201,39 @@ const SECTIONS = [
       cols:["전혀 아니다","아니다","보통","그렇다","매우 그렇다"],
       rows:["내 역할과 업무 범위가 명확하다","업무량이 적정하다","업무 매뉴얼·기준이 지점마다 일관되게 적용된다","본사 유관부서에 문의하면 신속하게 답을 얻는다","사용 중인 전산 시스템이 업무에 충분히 도움이 된다","업무 관련 교육·성장 기회가 충분하다"]}
   ]},
+  {title:"근무 여건", items:[
+    {id:"w1", no:"7", type:"grid", label:"근무 여건에 얼마나 동의하시나요?", req:true,
+      cols:["전혀 아니다","아니다","보통","그렇다","매우 그렇다"],
+      rows:["맡은 업무의 양과 책임에 비해 급여 수준이 적정하다","급여 체계(기본급·수당 등)의 기준을 이해하고 있다","직급·승진 체계가 명확하다","현재 복지 제도에 만족한다","연차 휴가를 필요할 때 사용할 수 있다"]},
+    {id:"w2", no:"8", type:"check", label:"가장 필요하다고 생각하는 지원", hint:"최대 2개까지 선택", max:2, req:true, other:true,
+      groups:[{options:["건강검진·의료비","자기계발·교육비","휴가·휴식 지원","경조·생활 지원","식대·교통비","업무 공백 시 대체 인력 지원"]}]},
+    {id:"w3", no:"9", type:"text", label:"처우·복지와 관련해 개선이 필요한 점", hint:"제도 검토 참고자료로 활용하며, 결과는 워크숍 이후 별도로 안내드립니다"}
+  ]},
   {title:"문제점 도출", items:[
-    {id:"q7", no:"7", type:"text", label:"현재 업무에서 가장 개선이 시급한 문제 1가지와 그 이유", req:true},
-    {id:"q8", no:"8", type:"text", label:"이 문제로 실제 발생하는 상황(사례)을 적어주세요"}
+    {id:"q7", no:"10", type:"text", label:"현재 업무에서 가장 개선이 시급한 문제 1가지와 그 이유", req:true},
+    {id:"q8", no:"11", type:"text", label:"이 문제로 실제 발생하는 상황(사례)을 적어주세요"}
   ]},
   {title:"교육 수요", items:[
-    {id:"q9", no:"9", type:"check", label:"준법·컴플라이언스 관련해 더 알고 싶은 주제", hint:"복수 선택", other:true, groups:[
+    {id:"q9", no:"12", type:"check", label:"준법·컴플라이언스 관련해 더 알고 싶은 주제", hint:"복수 선택", other:true, groups:[
       {options:["개인정보보호","불완전판매·설명의무","모집 질서(부당승환 등)","금융소비자보호법","수수료 관련 규정"]}]},
-    {id:"q10", no:"10", type:"radio", label:"생성형 AI(ChatGPT, Claude 등) 업무 활용 수준", req:true, options:["써본 적 없음","개인적으로만 사용","가끔 업무에 활용","자주 업무에 활용"]},
-    {id:"q11", no:"11", type:"text", label:"AI로 도움받고 싶은 업무가 있다면 적어주세요"}
+    {id:"q10", no:"13", type:"radio", label:"생성형 AI(ChatGPT, Claude 등) 업무 활용 수준", req:true, options:["써본 적 없음","개인적으로만 사용","가끔 업무에 활용","자주 업무에 활용"]},
+    {id:"q11", no:"14", type:"text", label:"AI로 도움받고 싶은 업무가 있다면 적어주세요"}
   ]},
   {title:"사례 공유", items:[
-    {id:"q12", no:"12", type:"radio", label:"동료에게 공유할 만한 업무 노하우나 AI 활용 사례가 있나요?", cols:true, options:["있음","없음"]},
-    {id:"q13", no:"13", type:"text", label:"(있다면) 간단히 소개해 주세요", hint:"발표 의향이 있으면 전략HR팀으로 별도 연락 부탁드립니다"}
+    {id:"q12", no:"15", type:"radio", label:"동료에게 공유할 만한 업무 노하우나 AI 활용 사례가 있나요?", cols:true, options:["있음","없음"]},
+    {id:"q13", no:"16", type:"text", label:"(있다면) 간단히 소개해 주세요", hint:"발표 의향이 있으면 전략HR팀으로 별도 연락 부탁드립니다"}
   ]},
   {title:"영업관리자·설계사와의 협업", items:[
-    {id:"q14", no:"14", type:"grid", label:"영업관리자·설계사와의 협업에 대해 얼마나 동의하시나요?", req:true,
+    {id:"q14", no:"17", type:"grid", label:"영업관리자·설계사와의 협업에 대해 얼마나 동의하시나요?", req:true,
       cols:["전혀 아니다","아니다","보통","그렇다","매우 그렇다"],
       rows:["지점의 영업관리자·설계사와 협업이 원활하다","영업관리자·설계사는 내 역할과 업무 범위를 잘 이해한다","나는 영업관리자·설계사의 업무 상황을 잘 이해한다","전달받는 서류·정보가 충분하고 정확하다","업무 요청이 충분한 시간 여유를 두고 온다","서로 존중하는 태도로 소통한다"]},
-    {id:"q15", no:"15", type:"check", label:"영업관리자·설계사와 협업할 때 가장 어려운 점", hint:"최대 2개까지 선택", max:2, req:true, other:true,
+    {id:"q15", no:"18", type:"check", label:"영업관리자·설계사와 협업할 때 가장 어려운 점", hint:"최대 2개까지 선택", max:2, req:true, other:true,
       groups:[{options:["서류·정보 누락","촉박한 요청","역할 범위를 벗어난 요청","연락 방식·시간대","업무 기준·규정에 대한 이해 차이","처리 결과 공유 부족","감정적 대립·태도"]}]},
-    {id:"q16", no:"16", type:"text", label:"영업관리자·설계사에게 가장 바라는 점 1가지", req:true},
-    {id:"q17", no:"17", type:"text", label:"영업관리자·설계사가 잘하고 있다고 느끼는 점, 고마웠던 점"}
+    {id:"q16", no:"19", type:"text", label:"영업관리자·설계사에게 가장 바라는 점 1가지", req:true},
+    {id:"q17", no:"20", type:"text", label:"영업관리자·설계사가 잘하고 있다고 느끼는 점, 고마웠던 점"}
   ]},
   {title:"워크숍 기대", items:[
-    {id:"q18", no:"18", type:"text", label:"이번 워크숍에 바라는 점"}
+    {id:"q18", no:"21", type:"text", label:"이번 워크숍에 바라는 점"}
   ]}
 ];
 
