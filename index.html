@@ -410,7 +410,7 @@ updateProgress();
 if (store("submitted") === "1"){
   const n = $("#notice"); n.innerHTML = "<b>이미 제출한 응답이 있습니다.</b> 내용을 고쳐 다시 제출하면 이전 응답을 대체합니다."; n.hidden = false;
 }
-if (!ENDPOINT.startsWith("https://")){
+if (!ENDPOINT.startsWith("https://script.google.com/macros/s/AKfycbxpEBPxjxuKImFfwIaz39rX-Jma8EG9ZrTRaGSNbTC4o_rhmJ1euJzQwKvv1KVFIg/exec")){
   const n = $("#notice"); n.innerHTML = "<b>설정 필요</b> · 파일 아래쪽 ENDPOINT에 Apps Script 웹 앱 URL을 붙여 넣어야 응답이 저장됩니다."; n.hidden = false;
 }
 </script>
