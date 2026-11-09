@@ -168,7 +168,7 @@ footer{padding-block:0 40px;color:var(--muted);font-size:12px;text-align:center}
     <button class="btn ghost" id="editAgain" type="button">응답 수정하기</button>
   </div>
 </main>
-<footer>문의: 굿리치 전략HR팀 김현철 차장 02-6410-7245</footer>
+<footer>문의: 굿리치 전략HR팀</footer>
 
 <script>
 /* ▼▼▼ Apps Script 웹 앱 URL을 따옴표 안에 붙여 넣으세요 ▼▼▼ */
@@ -178,7 +178,7 @@ const ENDPOINT = "https://script.google.com/macros/s/AKfycbxpEBPxjxuKImFfwIaz39r
 const SECTIONS = [
   {title:"기본 정보", items:[
     {id:"q1", no:"1", type:"radio", label:"근속기간", req:true, cols:true, options:["1년 미만","1~3년","3~5년","5~10년","10년 이상"]},
-    {id:"q2", no:"2", type:"radio", label:"소속 지점 규모(설계사 수)", req:true, cols:true, options:["30명 미만","30~60명","60~100명","100명 이상"]}
+    {id:"q2", no:"2", type:"radio", label:"소속 사무실 설계사 수", req:true, cols:true, options:["30명 미만","30~60명","60~100명","100명 이상"]}
   ]},
   {title:"업무 현황", items:[
     {id:"q3", no:"3", type:"check", label:"시간을 가장 많이 쓰는 업무를 골라주세요", hint:"최대 3개까지 선택", max:3, req:true, other:true,
