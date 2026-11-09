@@ -222,11 +222,10 @@ const SECTIONS = [
     {id:"q15", no:"15", type:"check", label:"영업관리자·설계사와 협업할 때 가장 어려운 점", hint:"최대 2개까지 선택", max:2, req:true, other:true,
       groups:[{options:["서류·정보 누락","촉박한 요청","역할 범위를 벗어난 요청","연락 방식·시간대","업무 기준·규정에 대한 이해 차이","처리 결과 공유 부족","감정적 대립·태도"]}]},
     {id:"q16", no:"16", type:"text", label:"영업관리자·설계사에게 가장 바라는 점 1가지", req:true},
-    {id:"q17", no:"17", type:"text", label:"영업관리자·설계사가 잘하고 있다고 느끼는 점, 고마웠던 점"},
-    {id:"q18", no:"18", type:"text", label:"원활한 협업을 위해 내가 바꿀 수 있는 것 1가지"}
+    {id:"q17", no:"17", type:"text", label:"영업관리자·설계사가 잘하고 있다고 느끼는 점, 고마웠던 점"}
   ]},
   {title:"워크숍 기대", items:[
-    {id:"q19", no:"19", type:"text", label:"이번 워크숍에 바라는 점"}
+    {id:"q18", no:"18", type:"text", label:"이번 워크숍에 바라는 점"}
   ]}
 ];
 
@@ -410,7 +409,7 @@ updateProgress();
 if (store("submitted") === "1"){
   const n = $("#notice"); n.innerHTML = "<b>이미 제출한 응답이 있습니다.</b> 내용을 고쳐 다시 제출하면 이전 응답을 대체합니다."; n.hidden = false;
 }
-if (!ENDPOINT.startsWith("https://script.google.com/macros/s/AKfycbxpEBPxjxuKImFfwIaz39rX-Jma8EG9ZrTRaGSNbTC4o_rhmJ1euJzQwKvv1KVFIg/exec")){
+if (!ENDPOINT.startsWith("https://")){
   const n = $("#notice"); n.innerHTML = "<b>설정 필요</b> · 파일 아래쪽 ENDPOINT에 Apps Script 웹 앱 URL을 붙여 넣어야 응답이 저장됩니다."; n.hidden = false;
 }
 </script>
