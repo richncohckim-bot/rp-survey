@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>주임단 협업 설문 (영업관리자용)</title>
+<title>주임단 업무 소통 설문 (영업관리자용)</title>
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
@@ -100,7 +100,8 @@ textarea:focus,input[type=text]:focus{outline:2px solid var(--accent);outline-of
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg);font-weight:600;font-size:14px;padding:10px 14px}
 .submit .status{font-size:14px;color:var(--muted);text-align:center;min-height:1.4em}
-.submit .status.bad{color:var(--danger)}
+.submit .status.bad{color:var(--danger);font-weight:600;background:var(--accent-soft);border-radius:8px;padding:10px 12px}
+.submit .status:empty{display:none}
 
 .done{padding-block:64px;text-align:center;display:grid;gap:12px;justify-items:center}
 .done .mark{width:56px;height:56px;border-radius:50%;background:var(--accent);display:grid;place-items:center}
@@ -139,13 +140,20 @@ body{margin:0}
 .opt-txt>span{font-weight:500}
 .opt-desc{font-size:13px;color:var(--muted);line-height:1.45}
 footer{padding-block:0 40px;color:var(--muted);font-size:12px;text-align:center}
+section.sec{border-top:0;margin-top:8px;padding-top:20px}
+.step-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.step-no{font-size:12px;font-weight:700;color:var(--accent-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sec .step-head h2{margin:0;font-size:19px;color:var(--fg);letter-spacing:0;font-weight:700}
+.stepnav{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.stepnav:has(#prevBtn[hidden]){grid-template-columns:1fr}
+.stepnav .btn.ghost{font-size:16px;padding:14px 20px}
 </style>
 </head>
 <body>
 <div class="top">
   <div class="wrap">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.05 6.60 496.07 85.24" role="img" aria-label="GoodRich"><g fill="#FFA500"><path d="M 384.77 26.36 C 390.29 26.36 394.65 21.99 394.65 16.48 C 394.65 10.96 390.29 6.6 384.77 6.6 C 379.26 6.6 374.89 10.96 374.89 16.48 C 374.89 21.99 379.26 26.36 384.77 26.36 "/><path d="M 75.96 46.11 L 58.5 46.11 L 58.5 58.75 L 73.9 58.75 C 79.88 58.75 81.25 60.82 81.25 64.73 C 81.25 70.7 74.82 77.82 61.49 77.82 C 46.33 77.82 37.14 65.64 37.14 51.86 C 37.14 37.38 47.02 25.9 61.49 25.9 C 69.3 25.9 75.28 28.66 81.94 34.17 L 91.59 24.06 C 84.47 16.71 73.44 11.88 61.49 11.88 C 37.83 11.88 21.05 30.03 21.05 51.86 C 21.05 76.45 39.66 91.84 61.49 91.84 C 80.33 91.84 95.5 79.89 95.5 62.43 C 95.5 50.48 87.68 46.11 75.96 46.11 "/><path d="M 377.65 89.31 L 392.12 89.31 L 392.12 32.56 L 377.65 32.56 Z M 377.65 89.31 "/><path d="M 431.64 43.13 C 439.23 43.13 442.9 47.04 445.43 49.79 L 455.08 41.07 C 449.79 33.94 441.75 29.57 431.64 29.57 C 413.26 29.57 400.86 42.67 400.86 59.9 C 400.86 77.14 413.26 90 431.64 90 C 441.52 90 450.25 85.63 455.08 79.2 L 446.12 69.78 C 443.13 72.77 437.62 76.45 431.64 76.45 C 422.68 76.45 415.56 69.78 415.56 59.9 C 415.56 50.02 422.68 43.13 431.64 43.13 "/><path d="M 491.84 30.95 C 487.25 30.95 480.58 32.56 476.45 36.23 L 476.45 10.04 L 462.2 10.04 L 462.2 89.31 L 476.68 89.31 L 476.68 57.6 C 476.68 49.1 482.42 44.74 489.54 44.74 C 496.66 44.74 502.41 49.56 502.41 57.6 L 502.41 89.31 L 517.12 89.31 L 517.12 57.6 C 516.88 42.67 508.38 30.95 491.84 30.95 "/><path d="M 322.73 37.38 C 322.73 28.43 329.4 23.14 337.21 23.14 C 345.25 23.14 351.68 28.66 351.68 37.38 C 351.68 45.66 345.02 51.63 337.21 51.63 C 329.17 51.63 322.73 45.66 322.73 37.38 M 365.93 37.38 C 365.93 21.07 353.75 9.81 337.21 9.81 C 321.82 9.81 308.49 19.92 308.49 38.3 L 308.49 89.31 L 322.96 89.31 L 322.96 60.82 L 350.77 89.31 L 369.61 89.31 L 344.33 63.35 C 357.2 60.59 365.93 49.56 365.93 37.38 "/><path d="M 198.89 78.97 C 189.47 78.97 182.12 70.7 182.12 61.51 C 182.12 52.32 189.24 44.28 198.89 44.28 C 209.0 44.28 215.89 52.32 215.89 61.51 C 215.89 70.7 209.0 78.97 198.89 78.97 M 198.89 31.64 C 181.66 31.64 167.88 44.28 167.88 61.51 C 167.88 78.51 181.2 91.61 198.89 91.61 C 216.81 91.61 230.14 78.97 230.14 61.51 C 230.14 44.28 216.58 31.64 198.89 31.64 "/><path d="M 265.52 78.97 C 256.56 78.97 248.98 71.16 248.98 61.28 C 248.98 51.86 256.56 44.28 265.52 44.28 C 276.09 44.28 282.75 52.55 282.75 61.51 C 282.75 70.24 276.32 78.97 265.52 78.97 M 282.75 36.92 C 278.16 33.48 271.5 31.64 265.52 31.64 C 248.75 31.64 234.73 44.28 234.73 61.28 C 234.73 78.97 248.52 91.61 265.52 91.61 C 284.13 91.61 296.77 79.66 296.77 59.67 L 296.77 10.04 L 282.75 10.04 Z M 282.75 36.92 "/><path d="M 132.03 78.97 C 122.61 78.97 115.26 70.7 115.26 61.51 C 115.26 52.32 122.38 44.28 132.03 44.28 C 142.14 44.28 149.03 52.32 149.03 61.51 C 149.03 70.7 142.14 78.97 132.03 78.97 M 132.03 31.64 C 114.8 31.64 101.01 44.28 101.01 61.51 C 101.01 78.51 114.34 91.61 132.03 91.61 C 149.95 91.61 163.28 78.97 163.28 61.51 C 163.28 44.28 149.72 31.64 132.03 31.64 "/></g></svg>
-    <span class="name">주임단 협업 설문 · 영업관리자용</span>
+    <span class="name">주임단 업무 소통 설문 · 영업관리자용</span>
     <span class="count" id="progText">필수 0 / 0</span>
   </div>
   <div class="bar"><i id="progBar"></i></div>
@@ -154,8 +162,8 @@ footer{padding-block:0 40px;color:var(--muted);font-size:12px;text-align:center}
 <main class="wrap">
   <header class="intro">
     <div class="eyebrow">전략HR팀 · 영업관리자 설문</div>
-    <h1>주임단과의 협업에 대한 의견을 들려주세요</h1>
-    <p class="lead">2027년 1월 RP 주임단 워크숍을 앞두고, 지점에서 함께 일하는 주임단과의 협업에 대한 의견을 듣고자 합니다. 응답은 익명으로 처리되며 워크숍 토의 자료로만 활용됩니다.</p>
+    <h1>주임단과 일하면서 느낀 점을 들려주세요</h1>
+    <p class="lead">2027년 1월 RP 주임단 워크숍을 앞두고, 사무실에서 함께 일하는 주임단에 대해 느낀 점을 듣고자 합니다. 응답은 익명으로 처리되며 워크숍 토의 자료로만 활용됩니다.</p>
     <div class="meta"><span class="chip">약 5분 소요</span><span class="chip">익명 응답</span><span class="chip">같은 기기에서 수정 가능</span></div>
     <div class="notice" id="notice" hidden></div>
   </header>
@@ -164,7 +172,7 @@ footer{padding-block:0 40px;color:var(--muted);font-size:12px;text-align:center}
   <div id="done" class="done" hidden>
     <div class="mark"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
     <h2>응답이 제출되었습니다</h2>
-    <p>소중한 의견 감사합니다. 주신 의견은 주임단 워크숍에서 협업 개선 자료로 활용하겠습니다.</p>
+    <p>소중한 의견 감사합니다. 주신 의견은 주임단 워크숍에서 업무 소통 개선 자료로 활용하겠습니다.</p>
     <button class="btn ghost" id="editAgain" type="button">응답 수정하기</button>
   </div>
 </main>
@@ -194,11 +202,11 @@ const SECTIONS = [
         "공통":"본사·사업단 업무 협조, 공지 전달"
       }}
   ]},
-  {title:"주임단과의 협업", items:[
-    {id:"m4", no:"5", type:"grid", label:"주임단과의 협업에 대해 얼마나 동의하시나요?", req:true,
+  {title:"주임단과 함께 일하기", items:[
+    {id:"m4", no:"5", type:"grid", label:"주임단과 일하면서 어떻게 느끼셨나요?", req:true,
       cols:["전혀 아니다","아니다","보통","그렇다","매우 그렇다"],
-      rows:["지점의 주임단과 협업이 원활하다","주임단은 내 역할과 업무 상황을 잘 이해한다","나는 주임단의 역할과 업무 범위를 잘 이해한다","주임단의 안내·처리 결과가 충분하고 정확하다","업무 처리가 필요한 시점에 맞춰 이루어진다","서로 존중하는 태도로 소통한다"]},
-    {id:"m5", no:"6", type:"check", label:"주임단과 협업할 때 가장 어려운 점", hint:"최대 2개까지 선택", max:2, req:true, other:true,
+      rows:["사무실의 주임단과 소통이 원활하다","주임단은 내 역할과 업무 상황을 잘 이해한다","나는 주임단의 역할과 업무 범위를 잘 이해한다","주임단의 안내·처리 결과가 충분하고 정확하다","업무 처리가 필요한 시점에 맞춰 이루어진다","서로 존중하는 태도로 소통한다"]},
+    {id:"m5", no:"6", type:"check", label:"주임단과 일할 때 가장 어려운 점", hint:"최대 2개까지 선택", max:2, req:true, other:true,
       groups:[{options:["서류·정보 누락","촉박한 요청","연락 방식·시간대","업무 기준·규정에 대한 이해 차이","처리 결과 공유 부족","감정적 대립·태도"]}]},
     {id:"m6", no:"7", type:"radio", label:"주임단에게 신계약/영업인사/본사공통업무 외 업무를 요청하는 빈도", req:true, cols:true, options:["거의 없음","월 1~2회","주 1~2회","거의 매일"]}
   ]},
@@ -214,6 +222,7 @@ const KEY = "rp-survey-2027-manager";
 const FORM = "영업관리자";   // 시트 탭 이름
 const $ = s => document.querySelector(s);
 const form = $("#form");
+let step = 0;
 
 /* ---------- 브라우저 저장(같은 기기에서 수정용) ---------- */
 function store(k, v){ try{ if (v === undefined) return localStorage.getItem(KEY+":"+k); localStorage.setItem(KEY+":"+k, v); }catch(e){ return null; } }
@@ -234,8 +243,10 @@ function optHTML(q, type, value, name){
 }
 function buildForm(){
   let html = "";
+  let si = 0;
   for (const s of SECTIONS){
-    html += `<section class="sec"><h2>${s.title}</h2>`;
+    html += `<section class="sec" data-step="${si}"${si ? " hidden" : ""}><div class="step-head"><span class="step-no">${si+1} / ${SECTIONS.length}</span><h2>${s.title}</h2></div>`;
+    si++;
     for (const q of s.items){
       const hint = q.hint ? `<span class="q-hint">${q.hint}</span>` : "";
       html += `<div class="q" id="wrap-${q.id}"><div class="q-head"><span class="q-no">${q.no}</span><span class="q-label">${q.label}${q.req?'<span class="req" aria-label="필수">*</span>':""}${hint}</span></div><div class="body">`;
@@ -260,7 +271,7 @@ function buildForm(){
     }
     html += `</section>`;
   }
-  html += `<div class="submit"><button class="btn" id="submitBtn" type="submit">응답 제출하기</button><div class="status" id="status" role="status"></div></div>`;
+  html += `<div class="submit"><div class="status" id="status" role="status"></div><div class="stepnav"><button class="btn ghost" id="prevBtn" type="button" hidden>이전</button><button class="btn" id="submitBtn" type="submit">다음</button></div></div>`;
   form.innerHTML = html;
 }
 
@@ -304,8 +315,8 @@ function isAnswered(q, a){
 function updateProgress(){
   const a = readAnswers();
   const done = REQ.filter(q => isAnswered(q,a)).length;
-  $("#progText").textContent = `필수 ${done} / ${REQ.length}`;
-  $("#progBar").style.width = (done / REQ.length * 100) + "%";
+  $("#progText").textContent = `${step+1} / ${SECTIONS.length} 단계`;
+  $("#progBar").style.width = ((step+1) / SECTIONS.length * 100) + "%";
   for (const q of REQ){ if (isAnswered(q,a)) clearErr(q.id); }
   store("draft", JSON.stringify(a));
 }
@@ -356,8 +367,17 @@ form.addEventListener("submit", async e => {
   e.preventDefault();
   const st = $("#status"); st.className = "status";
   const a = readAnswers();
+  const missHere = SECTIONS[step].items.filter(q => q.req && !isAnswered(q,a));
+  if (missHere.length){
+    missHere.forEach(q => markErr(q,a));
+    st.className = "status bad"; st.textContent = `이 단계의 필수 문항 ${missHere.length}개가 남아 있습니다.`;
+    $("#wrap-"+missHere[0].id).scrollIntoView({behavior:"smooth", block:"center"});
+    return;
+  }
+  if (step < SECTIONS.length - 1){ showStep(step + 1); return; }
   const miss = REQ.filter(q => !isAnswered(q,a));
   if (miss.length){
+    showStep(SECTIONS.findIndex(sec => sec.items.includes(miss[0])), false);
     miss.forEach(q => markErr(q,a));
     st.className = "status bad"; st.textContent = `필수 문항 ${miss.length}개가 남아 있습니다.`;
     $("#wrap-"+miss[0].id).scrollIntoView({behavior:"smooth", block:"center"});
@@ -378,12 +398,25 @@ form.addEventListener("submit", async e => {
     st.className = "status bad"; st.textContent = "제출하지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.";
   }finally{ btn.disabled = false; }
 });
-$("#editAgain").addEventListener("click", () => { $("#done").hidden = true; form.hidden = false; $("#status").textContent = "수정 후 다시 제출하면 이전 응답을 대체합니다."; });
+$("#editAgain").addEventListener("click", () => { $("#done").hidden = true; form.hidden = false; showStep(0); $("#status").textContent = "수정 후 다시 제출하면 이전 응답을 대체합니다."; });
+
+/* ---------- 단계 이동 ---------- */
+function showStep(i, scroll = true){
+  step = Math.max(0, Math.min(i, SECTIONS.length - 1));
+  form.querySelectorAll("section.sec").forEach(el => { el.hidden = Number(el.dataset.step) !== step; });
+  $("#prevBtn").hidden = step === 0;
+  $("#submitBtn").textContent = step === SECTIONS.length - 1 ? "응답 제출하기" : "다음";
+  const st = $("#status"); st.className = "status"; st.textContent = "";
+  updateProgress();
+  store("step", String(step));
+  if (scroll) window.scrollTo({top:0});
+}
 
 /* ---------- 시작 ---------- */
 buildForm();
+$("#prevBtn").addEventListener("click", () => showStep(step - 1));
 try{ const d = JSON.parse(store("draft") || "null"); if (d) fillAnswers(d); }catch(e){}
-updateProgress();
+showStep(Number(store("step")) || 0, false);
 if (store("submitted") === "1"){
   const n = $("#notice"); n.innerHTML = "<b>이미 제출한 응답이 있습니다.</b> 내용을 고쳐 다시 제출하면 이전 응답을 대체합니다."; n.hidden = false;
 }
