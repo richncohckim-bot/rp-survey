@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RP 주임단 워크숍 사전 설문</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: 한 열 설문지(680px) — 상단 고정 진행 막대, 섹션 단위 카드 없이 구분선으로 흐름 유지 */
+:root{
+  --bg:#F4F4F3; --surface:#FFFFFF; --fg:#1E1E1E; --muted:#737373; --line:#E0E0DD;
+  --accent:#FFA500; --accent-ink:#965800; --accent-soft:#FFF2D9; --danger:#C2410C;
+  --font:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#151515; --surface:#1F1F1F; --fg:#ECECEC; --muted:#A3A3A3; --line:#343434;
+  --accent:#FFA500; --accent-ink:#FFBA3D; --accent-soft:#3A2905; --danger:#FB923C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#151515; --surface:#1F1F1F; --fg:#ECECEC; --muted:#A3A3A3; --line:#343434;
+  --accent:#FFA500; --accent-ink:#FFBA3D; --accent-soft:#3A2905; --danger:#FB923C; color-scheme:dark}
+
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:680px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* 상단바 */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px}
+.top svg{height:18px;width:auto;flex:none}
+.top .name{font-size:13px;color:var(--muted);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .count{font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.bar{height:3px;background:var(--line)}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+
+/* 머리말 */
+header.intro{padding-block:36px 8px}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--accent-ink);font-weight:600}
+h1{font-size:26px;line-height:1.3;margin:6px 0 14px;text-wrap:balance;font-weight:700}
+.lead{color:var(--muted);margin:0;max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-size:12px;padding:3px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent-ink);font-weight:500}
+
+.tabs{display:flex;gap:4px;margin-top:24px;border-bottom:1px solid var(--line)}
+.tabs button{all:unset;cursor:pointer;padding:10px 14px;font-size:14px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--fg);border-color:var(--accent);font-weight:600}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.notice{margin-top:20px;padding:12px 14px;border-radius:8px;background:var(--accent-soft);color:var(--fg);font-size:14px}
+.notice b{color:var(--accent-ink)}
+
+/* 섹션·문항 */
+section.sec{padding-block:28px 4px;border-top:1px solid var(--line);margin-top:28px}
+section.sec:first-of-type{border-top:0;margin-top:8px}
+.sec h2{font-size:13px;letter-spacing:.06em;color:var(--muted);font-weight:600;margin:0 0 4px}
+.q{padding-block:18px;display:grid;gap:12px}
+.q-head{display:flex;gap:10px;align-items:baseline}
+.q-no{flex:none;font-weight:700;color:var(--accent-ink);font-variant-numeric:tabular-nums;min-width:2.2em}
+.q-label{font-weight:600;font-size:16px;line-height:1.5}
+.q-label .req{color:var(--danger);margin-left:3px}
+.q-hint{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
+.q.err .q-label{color:var(--danger)}
+.q .errmsg{font-size:13px;color:var(--danger);padding-left:calc(2.2em + 10px)}
+.body{padding-left:calc(2.2em + 10px);display:grid;gap:8px;min-width:0}
+
+.opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt input{accent-color:var(--accent);width:18px;height:18px;margin:0;flex:none}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:1px}
+.opts{display:grid;gap:6px}
+.opt-txt{display:grid;gap:1px;min-width:0}
+.opt-txt>span{font-weight:500}
+.opt-desc{font-size:13px;color:var(--muted);line-height:1.45}
+.opts.cols{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.grp{display:grid;gap:6px}
+.grp-name{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;margin-top:6px}
+.etc{margin-top:4px}
+
+textarea,input[type=text]{width:100%;box-sizing:border-box;font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:92px;resize:vertical}
+textarea:focus,input[type=text]:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* 5점 척도 */
+.scale-row{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.scale-row.miss{border-color:var(--danger)}
+.scale-row p{margin:0;font-weight:500}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.scale label{display:grid;place-items:center;gap:2px;padding:8px 2px;border:1px solid var(--line);border-radius:6px;cursor:pointer;text-align:center;font-size:12px;line-height:1.25;color:var(--muted)}
+.scale label b{font-size:15px;color:var(--fg);font-variant-numeric:tabular-nums}
+.scale input{position:absolute;opacity:0;pointer-events:none}
+.scale label:has(input:checked){background:var(--accent);border-color:var(--accent);color:#1E1E1E}
+.scale label:has(input:checked) b{color:#1E1E1E}
+.scale label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:1px}
+
+.submit{padding-block:28px 56px;display:grid;gap:10px}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:14px 20px;border-radius:8px;background:var(--accent);color:#1E1E1E;font-weight:700;font-size:16px}
+.btn:hover{filter:brightness(.95)}
+.btn:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg);font-weight:600;font-size:14px;padding:10px 14px}
+.submit .status{font-size:14px;color:var(--muted);text-align:center;min-height:1.4em}
+.submit .status.bad{color:var(--danger)}
+
+.done{padding-block:64px;text-align:center;display:grid;gap:12px;justify-items:center}
+.done .mark{width:56px;height:56px;border-radius:50%;background:var(--accent);display:grid;place-items:center}
+.done h2{font-size:22px;margin:0}
+.done p{color:var(--muted);margin:0;max-width:44ch}
+
+/* 결과 */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;padding-block:24px 8px}
+.stat{padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.stat span{font-size:12px;color:var(--muted)}
+.stat strong{display:block;font-size:26px;font-variant-numeric:tabular-nums;line-height:1.2;margin-top:4px}
+.r-tools{display:flex;justify-content:flex-end;gap:8px;align-items:center;flex-wrap:wrap}
+.r-tools .note{font-size:13px;color:var(--muted);margin-right:auto}
+.bars{display:grid;gap:6px}
+.brow{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:10px;align-items:center;font-size:14px}
+.brow .lbl{min-width:0}
+.brow .track{height:6px;background:var(--line);border-radius:3px;margin-top:4px;overflow:hidden}
+.brow .track i{display:block;height:100%;background:var(--accent)}
+.brow .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+.brow .n b{color:var(--fg)}
+.texts{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.texts li{padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.empty{color:var(--muted);font-size:14px;padding:24px 0}
+.avg b{font-variant-numeric:tabular-nums}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (max-width:420px){.body,.q .errmsg{padding-left:0}h1{font-size:22px}.scale label{font-size:11px}}
+</style>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+.opt-txt{display:grid;gap:1px;min-width:0}
+.opt-txt>span{font-weight:500}
+.opt-desc{font-size:13px;color:var(--muted);line-height:1.45}
+footer{padding-block:0 40px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.05 6.60 496.07 85.24" role="img" aria-label="GoodRich"><g fill="#FFA500"><path d="M 384.77 26.36 C 390.29 26.36 394.65 21.99 394.65 16.48 C 394.65 10.96 390.29 6.6 384.77 6.6 C 379.26 6.6 374.89 10.96 374.89 16.48 C 374.89 21.99 379.26 26.36 384.77 26.36 "/><path d="M 75.96 46.11 L 58.5 46.11 L 58.5 58.75 L 73.9 58.75 C 79.88 58.75 81.25 60.82 81.25 64.73 C 81.25 70.7 74.82 77.82 61.49 77.82 C 46.33 77.82 37.14 65.64 37.14 51.86 C 37.14 37.38 47.02 25.9 61.49 25.9 C 69.3 25.9 75.28 28.66 81.94 34.17 L 91.59 24.06 C 84.47 16.71 73.44 11.88 61.49 11.88 C 37.83 11.88 21.05 30.03 21.05 51.86 C 21.05 76.45 39.66 91.84 61.49 91.84 C 80.33 91.84 95.5 79.89 95.5 62.43 C 95.5 50.48 87.68 46.11 75.96 46.11 "/><path d="M 377.65 89.31 L 392.12 89.31 L 392.12 32.56 L 377.65 32.56 Z M 377.65 89.31 "/><path d="M 431.64 43.13 C 439.23 43.13 442.9 47.04 445.43 49.79 L 455.08 41.07 C 449.79 33.94 441.75 29.57 431.64 29.57 C 413.26 29.57 400.86 42.67 400.86 59.9 C 400.86 77.14 413.26 90 431.64 90 C 441.52 90 450.25 85.63 455.08 79.2 L 446.12 69.78 C 443.13 72.77 437.62 76.45 431.64 76.45 C 422.68 76.45 415.56 69.78 415.56 59.9 C 415.56 50.02 422.68 43.13 431.64 43.13 "/><path d="M 491.84 30.95 C 487.25 30.95 480.58 32.56 476.45 36.23 L 476.45 10.04 L 462.2 10.04 L 462.2 89.31 L 476.68 89.31 L 476.68 57.6 C 476.68 49.1 482.42 44.74 489.54 44.74 C 496.66 44.74 502.41 49.56 502.41 57.6 L 502.41 89.31 L 517.12 89.31 L 517.12 57.6 C 516.88 42.67 508.38 30.95 491.84 30.95 "/><path d="M 322.73 37.38 C 322.73 28.43 329.4 23.14 337.21 23.14 C 345.25 23.14 351.68 28.66 351.68 37.38 C 351.68 45.66 345.02 51.63 337.21 51.63 C 329.17 51.63 322.73 45.66 322.73 37.38 M 365.93 37.38 C 365.93 21.07 353.75 9.81 337.21 9.81 C 321.82 9.81 308.49 19.92 308.49 38.3 L 308.49 89.31 L 322.96 89.31 L 322.96 60.82 L 350.77 89.31 L 369.61 89.31 L 344.33 63.35 C 357.2 60.59 365.93 49.56 365.93 37.38 "/><path d="M 198.89 78.97 C 189.47 78.97 182.12 70.7 182.12 61.51 C 182.12 52.32 189.24 44.28 198.89 44.28 C 209.0 44.28 215.89 52.32 215.89 61.51 C 215.89 70.7 209.0 78.97 198.89 78.97 M 198.89 31.64 C 181.66 31.64 167.88 44.28 167.88 61.51 C 167.88 78.51 181.2 91.61 198.89 91.61 C 216.81 91.61 230.14 78.97 230.14 61.51 C 230.14 44.28 216.58 31.64 198.89 31.64 "/><path d="M 265.52 78.97 C 256.56 78.97 248.98 71.16 248.98 61.28 C 248.98 51.86 256.56 44.28 265.52 44.28 C 276.09 44.28 282.75 52.55 282.75 61.51 C 282.75 70.24 276.32 78.97 265.52 78.97 M 282.75 36.92 C 278.16 33.48 271.5 31.64 265.52 31.64 C 248.75 31.64 234.73 44.28 234.73 61.28 C 234.73 78.97 248.52 91.61 265.52 91.61 C 284.13 91.61 296.77 79.66 296.77 59.67 L 296.77 10.04 L 282.75 10.04 Z M 282.75 36.92 "/><path d="M 132.03 78.97 C 122.61 78.97 115.26 70.7 115.26 61.51 C 115.26 52.32 122.38 44.28 132.03 44.28 C 142.14 44.28 149.03 52.32 149.03 61.51 C 149.03 70.7 142.14 78.97 132.03 78.97 M 132.03 31.64 C 114.8 31.64 101.01 44.28 101.01 61.51 C 101.01 78.51 114.34 91.61 132.03 91.61 C 149.95 91.61 163.28 78.97 163.28 61.51 C 163.28 44.28 149.72 31.64 132.03 31.64 "/></g></svg>
+    <span class="name">2027 RP 주임단 워크숍 사전 설문</span>
+    <span class="count" id="progText">필수 0 / 0</span>
+  </div>
+  <div class="bar"><i id="progBar"></i></div>
+</div>
+
+<main class="wrap">
+  <header class="intro">
+    <div class="eyebrow">전략HR팀 · 사전 설문</div>
+    <h1>2027 RP 주임단 워크숍 사전 설문</h1>
+    <p class="lead">2027년 1월 RP 주임단 워크숍을 앞두고 현장 업무 현황과 의견을 듣고자 합니다. 응답은 익명으로 처리되며, 결과는 워크숍 조별 토의 자료로만 활용됩니다.</p>
+    <div class="meta"><span class="chip">약 7분 소요</span><span class="chip">익명 응답</span><span class="chip">같은 기기에서 수정 가능</span></div>
+    <div class="notice" id="notice" hidden></div>
+  </header>
+
+  <form id="form" novalidate></form>
+  <div id="done" class="done" hidden>
+    <div class="mark"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>응답이 제출되었습니다</h2>
+    <p>소중한 의견 감사합니다. 1월 워크숍에서 뵙겠습니다.</p>
+    <button class="btn ghost" id="editAgain" type="button">응답 수정하기</button>
+  </div>
+</main>
+<footer>문의: 굿리치 전략HR팀</footer>
+
+<script>
+/* ▼▼▼ Apps Script 웹 앱 URL을 따옴표 안에 붙여 넣으세요 ▼▼▼ */
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbwil7zUWhZ80nM1W3E-oCUNmSKBITGprNeMsCTZmurrjIf_Gqi2FFv1e8Dm2I9Nm1tZ/exec";
+/* ▲▲▲ ------------------------------------------------ ▲▲▲ */
+
+const SECTIONS = [
+  {title:"기본 정보", items:[
+    {id:"q1", no:"1", type:"radio", label:"근속기간", req:true, cols:true, options:["1년 미만","1~3년","3~5년","5~10년","10년 이상"]},
+    {id:"q2", no:"2", type:"radio", label:"소속 지점 규모(설계사 수)", req:true, cols:true, options:["30명 미만","30~60명","60~100명","100명 이상"]}
+  ]},
+  {title:"업무 현황", items:[
+    {id:"q3", no:"3", type:"check", label:"시간을 가장 많이 쓰는 업무를 골라주세요", hint:"최대 3개까지 선택", max:3, req:true, other:true,
+      groups:[{options:["신계약","보유계약","고객서비스","RP 인사","사무실 관리","준법감시","공통"]}],
+      desc:{
+        "신계약":"청약서 1차 심사·스캔·전산 입력 ~ 원본 청약서 보험사 발송",
+        "보유계약":"계약 변경·제지급·보험금 접수 지원, 유지율·수금 관리",
+        "고객서비스":"내방·전화 고객 응대, 민원 처리 및 관련 팀 협의",
+        "RP 인사":"위촉·해촉, 자격시험·등록교육, 보증보험·인사변경 서류",
+        "사무실 관리":"비품·보안·경상비 관리",
+        "준법감시":"자기점검표 작성, 위반 의심 건 보고",
+        "공통":"본사·사업단 업무 협조, 공지 전달"
+      }},
+    {id:"q3_1", no:"3-1", type:"radio", label:"R&R 범위를 벗어난 업무(개인 용무, 컨설팅 자료 작성, 서류 대필 요청 등)를 요청받는 빈도", req:true, cols:true, options:["거의 없음","월 1~2회","주 1~2회","거의 매일"]},
+    {id:"q4", no:"4", type:"text", label:"반복적이거나 비효율적이라고 느끼는 업무를 적어주세요"},
+    {id:"q5", no:"5", type:"radio", label:"주 평균 초과근무 시간", req:true, cols:true, options:["없음","1~3시간","3~5시간","5시간 이상"]}
+  ]},
+  {title:"현황 진단", items:[
+    {id:"q6", no:"6", type:"grid", label:"아래 항목에 얼마나 동의하시나요?", req:true,
+      cols:["전혀 아니다","아니다","보통","그렇다","매우 그렇다"],
+      rows:["내 역할과 업무 범위가 명확하다","업무량이 적정하다","업무 매뉴얼·기준이 지점마다 일관되게 적용된다","본사 유관부서에 문의하면 신속하게 답을 얻는다","사용 중인 전산 시스템이 업무에 충분히 도움이 된다","지점장·설계사와 협업이 원활하다","업무 관련 교육·성장 기회가 충분하다"]}
+  ]},
+  {title:"문제점 도출", items:[
+    {id:"q7", no:"7", type:"text", label:"현재 업무에서 가장 개선이 시급한 문제 1가지와 그 이유", req:true},
+    {id:"q8", no:"8", type:"text", label:"이 문제로 실제 발생하는 상황(사례)을 적어주세요"}
+  ]},
+  {title:"교육 수요", items:[
+    {id:"q9", no:"9", type:"check", label:"준법·컴플라이언스 관련해 더 알고 싶은 주제", hint:"복수 선택", other:true, groups:[
+      {options:["개인정보보호","불완전판매·설명의무","모집 질서(부당승환 등)","금융소비자보호법","수수료 관련 규정"]}]},
+    {id:"q10", no:"10", type:"radio", label:"생성형 AI(ChatGPT, Claude 등) 업무 활용 수준", req:true, options:["써본 적 없음","개인적으로만 사용","가끔 업무에 활용","자주 업무에 활용"]},
+    {id:"q11", no:"11", type:"text", label:"AI로 도움받고 싶은 업무가 있다면 적어주세요"}
+  ]},
+  {title:"사례 공유·기대", items:[
+    {id:"q12", no:"12", type:"radio", label:"동료에게 공유할 만한 업무 노하우나 AI 활용 사례가 있나요?", cols:true, options:["있음","없음"]},
+    {id:"q13", no:"13", type:"text", label:"(있다면) 간단히 소개해 주세요", hint:"발표 의향이 있으면 전략HR팀으로 별도 연락 부탁드립니다"},
+    {id:"q14", no:"14", type:"text", label:"이번 워크숍에 바라는 점"}
+  ]}
+];
+
+const ITEMS = SECTIONS.flatMap(s => s.items);
+const REQ = ITEMS.filter(q => q.req);
+const ETC = "기타";
+const KEY = "rp-survey-2027";
+const $ = s => document.querySelector(s);
+const form = $("#form");
+
+/* ---------- 브라우저 저장(같은 기기에서 수정용) ---------- */
+function store(k, v){ try{ if (v === undefined) return localStorage.getItem(KEY+":"+k); localStorage.setItem(KEY+":"+k, v); }catch(e){ return null; } }
+function respondentId(){
+  let id = store("id");
+  if (!id){
+    id = (crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2)));
+    store("id", id);
+  }
+  return id;
+}
+
+/* ---------- 설문 렌더 ---------- */
+function optHTML(q, type, value, name){
+  const id = `${q.id}__${value}`.replace(/[^\w가-힣-]/g,"_");
+  const d = q.desc && q.desc[value] ? `<small class="opt-desc">${q.desc[value]}</small>` : "";
+  return `<label class="opt" for="${id}"><input type="${type}" id="${id}" name="${name}" value="${value}"><span class="opt-txt"><span>${value}</span>${d}</span></label>`;
+}
+function buildForm(){
+  let html = "";
+  for (const s of SECTIONS){
+    html += `<section class="sec"><h2>${s.title}</h2>`;
+    for (const q of s.items){
+      const hint = q.hint ? `<span class="q-hint">${q.hint}</span>` : "";
+      html += `<div class="q" id="wrap-${q.id}"><div class="q-head"><span class="q-no">${q.no}</span><span class="q-label">${q.label}${q.req?'<span class="req" aria-label="필수">*</span>':""}${hint}</span></div><div class="body">`;
+      if (q.type === "radio"){
+        html += `<div class="opts${q.cols?" cols":""}" role="radiogroup">` + q.options.map(o => optHTML(q,"radio",o,q.id)).join("") + `</div>`;
+      } else if (q.type === "check"){
+        for (const g of q.groups){
+          html += `<div class="grp">${g.name?`<div class="grp-name">${g.name}</div>`:""}<div class="opts">` + g.options.map(o => optHTML(q,"checkbox",o,q.id)).join("") + `</div></div>`;
+        }
+        if (q.other){
+          html += `<div class="grp"><div class="opts">${optHTML(q,"checkbox",ETC,q.id)}</div><input type="text" class="etc" id="${q.id}_etc" placeholder="기타 내용을 입력해 주세요" hidden></div>`;
+        }
+      } else if (q.type === "grid"){
+        q.rows.forEach((r,i) => {
+          html += `<div class="scale-row" id="${q.id}-row${i}"><p>${r}</p><div class="scale" role="radiogroup" aria-label="${r}">` +
+            q.cols.map((c,j) => `<label for="${q.id}_${i}_${j+1}"><input type="radio" id="${q.id}_${i}_${j+1}" name="${q.id}_${i}" value="${j+1}"><b>${j+1}</b>${c}</label>`).join("") + `</div></div>`;
+        });
+      } else {
+        html += `<textarea id="${q.id}" name="${q.id}" placeholder="자유롭게 작성해 주세요"></textarea>`;
+      }
+      html += `</div></div>`;
+    }
+    html += `</section>`;
+  }
+  html += `<div class="submit"><button class="btn" id="submitBtn" type="submit">응답 제출하기</button><div class="status" id="status" role="status"></div></div>`;
+  form.innerHTML = html;
+}
+
+function readAnswers(){
+  const a = {};
+  for (const q of ITEMS){
+    if (q.type === "radio"){
+      const el = form.querySelector(`input[name="${q.id}"]:checked`); a[q.id] = el ? el.value : "";
+    } else if (q.type === "check"){
+      a[q.id] = [...form.querySelectorAll(`input[name="${q.id}"]:checked`)].map(e => e.value);
+      if (q.other) a[q.id+"_etc"] = a[q.id].includes(ETC) ? $(`#${q.id}_etc`).value.trim() : "";
+    } else if (q.type === "grid"){
+      a[q.id] = q.rows.map((_,i) => { const el = form.querySelector(`input[name="${q.id}_${i}"]:checked`); return el ? Number(el.value) : 0; });
+    } else {
+      a[q.id] = $(`#${q.id}`).value.trim();
+    }
+  }
+  return a;
+}
+function fillAnswers(a){
+  for (const q of ITEMS){
+    const v = a[q.id];
+    if (v == null) continue;
+    if (q.type === "radio" || q.type === "check"){
+      const vals = Array.isArray(v) ? v : [v];
+      form.querySelectorAll(`input[name="${q.id}"]`).forEach(e => { e.checked = vals.includes(e.value); });
+      if (q.other){ const t = $(`#${q.id}_etc`); t.value = a[q.id+"_etc"] || ""; t.hidden = !vals.includes(ETC); }
+    } else if (q.type === "grid"){
+      v.forEach((n,i) => { const el = $(`#${q.id}_${i}_${n}`); if (el) el.checked = true; });
+    } else {
+      $(`#${q.id}`).value = v;
+    }
+  }
+}
+function isAnswered(q, a){
+  const v = a[q.id];
+  if (q.type === "check") return v.length > 0 && !(v.includes(ETC) && !a[q.id+"_etc"]);
+  if (q.type === "grid") return v.every(n => n > 0);
+  return !!v;
+}
+function updateProgress(){
+  const a = readAnswers();
+  const done = REQ.filter(q => isAnswered(q,a)).length;
+  $("#progText").textContent = `필수 ${done} / ${REQ.length}`;
+  $("#progBar").style.width = (done / REQ.length * 100) + "%";
+  for (const q of REQ){ if (isAnswered(q,a)) clearErr(q.id); }
+  store("draft", JSON.stringify(a));
+}
+function clearErr(id){
+  const w = $("#wrap-"+id); w.classList.remove("err");
+  w.querySelector(".errmsg")?.remove();
+  w.querySelectorAll(".scale-row.miss").forEach(r => r.classList.remove("miss"));
+}
+function markErr(q, a){
+  const w = $("#wrap-"+q.id);
+  w.classList.add("err");
+  if (!w.querySelector(".errmsg")){
+    const m = document.createElement("div"); m.className = "errmsg";
+    m.textContent = q.type === "grid" ? "모든 항목에 응답해 주세요." : q.type === "check" && a[q.id].includes(ETC) ? "기타 내용을 입력해 주세요." : "필수 문항입니다.";
+    w.appendChild(m);
+  }
+  if (q.type === "grid") a[q.id].forEach((n,i) => { if (!n) $(`#${q.id}-row${i}`).classList.add("miss"); });
+}
+
+/* 시트에 들어갈 한 줄(머리글: 값) */
+function toRow(a){
+  const row = {};
+  for (const q of ITEMS){
+    if (q.type === "grid") q.rows.forEach((r,i) => { row[`${q.no}-${i+1}. ${r}`] = a[q.id][i] || ""; });
+    else if (q.type === "check"){ row[`${q.no}. ${q.label}`] = a[q.id].join(" | "); if (q.other) row[`${q.no}. 기타 내용`] = a[q.id+"_etc"]; }
+    else row[`${q.no}. ${q.label}`] = a[q.id];
+  }
+  return row;
+}
+
+form.addEventListener("change", e => {
+  const t = e.target;
+  const q = ITEMS.find(x => x.id === t.name);
+  if (q && q.type === "check"){
+    const checked = form.querySelectorAll(`input[name="${q.id}"]:checked`);
+    if (q.max && checked.length > q.max){
+      t.checked = false;
+      const hint = $("#wrap-"+q.id).querySelector(".q-hint");
+      if (hint){ hint.textContent = `최대 ${q.max}개까지 선택할 수 있습니다`; hint.style.color = "var(--danger)"; setTimeout(()=>{hint.textContent=q.hint;hint.style.color="";},2200); }
+    }
+    if (q.other && t.value === ETC){ const et = $(`#${q.id}_etc`); et.hidden = !t.checked; if (t.checked) et.focus(); }
+  }
+  updateProgress();
+});
+form.addEventListener("input", e => { if (e.target.matches("textarea,input[type=text]")) updateProgress(); });
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const st = $("#status"); st.className = "status";
+  const a = readAnswers();
+  const miss = REQ.filter(q => !isAnswered(q,a));
+  if (miss.length){
+    miss.forEach(q => markErr(q,a));
+    st.className = "status bad"; st.textContent = `필수 문항 ${miss.length}개가 남아 있습니다.`;
+    $("#wrap-"+miss[0].id).scrollIntoView({behavior:"smooth", block:"center"});
+    return;
+  }
+  if (!ENDPOINT.startsWith("https://")){
+    st.className = "status bad"; st.textContent = "응답 저장 주소가 설정되지 않았습니다. 전략HR팀에 문의해 주세요.";
+    return;
+  }
+  const btn = $("#submitBtn"); btn.disabled = true; st.textContent = "제출하는 중…";
+  try{
+    const res = await fetch(ENDPOINT, { method:"POST", body: JSON.stringify({ id: respondentId(), row: toRow(a) }) });
+    const out = await res.json();
+    if (!out.ok) throw new Error(out.error || "save failed");
+    store("submitted", "1");
+    form.hidden = true; $("#done").hidden = false; $("#notice").hidden = true; window.scrollTo({top:0});
+  }catch(err){
+    st.className = "status bad"; st.textContent = "제출하지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.";
+  }finally{ btn.disabled = false; }
+});
+$("#editAgain").addEventListener("click", () => { $("#done").hidden = true; form.hidden = false; $("#status").textContent = "수정 후 다시 제출하면 이전 응답을 대체합니다."; });
+
+/* ---------- 시작 ---------- */
+buildForm();
+try{ const d = JSON.parse(store("draft") || "null"); if (d) fillAnswers(d); }catch(e){}
+updateProgress();
+if (store("submitted") === "1"){
+  const n = $("#notice"); n.innerHTML = "<b>이미 제출한 응답이 있습니다.</b> 내용을 고쳐 다시 제출하면 이전 응답을 대체합니다."; n.hidden = false;
+}
+if (!ENDPOINT.startsWith("https://")){
+  const n = $("#notice"); n.innerHTML = "<b>설정 필요</b> · 파일 아래쪽 ENDPOINT에 Apps Script 웹 앱 URL을 붙여 넣어야 응답이 저장됩니다."; n.hidden = false;
+}
+</script>
+</body>
+</html>
