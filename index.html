@@ -192,7 +192,9 @@ const SECTIONS = [
         "준법감시":"자기점검표 작성, 위반 의심 건 보고",
         "공통":"본사·사업단 업무 협조, 공지 전달"
       }},
-    {id:"q3_1", no:"3-1", type:"radio", label:"R&R 범위를 벗어난 업무(개인 용무, 서류 대필 요청 등)를 요청받는 빈도", req:true, cols:true, options:["거의 없음","월 1~2회","주 1~2회","거의 매일"]},
+    {id:"q3_n", no:"3-1", type:"check", label:"위 업무 중 주임단 업무가 아니라고 생각하는 것을 골라주세요", hint:"복수 선택 가능", req:true, exclusive:"모두 주임단 업무다",
+      groups:[{options:["신계약","보유계약","고객서비스","RP 인사","사무실 관리","준법감시","공통","모두 주임단 업무다"]}]},
+    {id:"q3_1", no:"3-2", type:"radio", label:"R&R 범위를 벗어난 업무(개인 용무, 서류 대필 요청 등)를 요청받는 빈도", req:true, cols:true, options:["거의 없음","월 1~2회","주 1~2회","거의 매일"]},
     {id:"q4", no:"4", type:"text", label:"반복적이거나 비효율적이라고 느끼는 업무를 적어주세요"},
     {id:"q5", no:"5", type:"radio", label:"주 평균 초과근무 시간", req:true, cols:true, options:["없음","1~3시간","3~5시간","5시간 이상"]}
   ]},
@@ -370,6 +372,11 @@ form.addEventListener("change", e => {
   const t = e.target;
   const q = ITEMS.find(x => x.id === t.name);
   if (q && q.type === "check"){
+    if (q.exclusive && t.checked){
+      form.querySelectorAll(`input[name="${q.id}"]:checked`).forEach(e => {
+        if (t.value === q.exclusive ? e !== t : e.value === q.exclusive) e.checked = false;
+      });
+    }
     const checked = form.querySelectorAll(`input[name="${q.id}"]:checked`);
     if (q.max && checked.length > q.max){
       t.checked = false;
