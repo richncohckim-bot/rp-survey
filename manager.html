@@ -203,6 +203,8 @@ footer{padding-block:28px 40px}
 .stepper{display:flex;align-items:center;margin:22px 0 0;padding:2px}
 .stepper button{all:unset;box-sizing:border-box;cursor:pointer;flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface);border:1.5px solid var(--line);color:var(--muted)}
 .stepper button:hover{border-color:var(--accent)}
+.stepper button:disabled{opacity:.4;cursor:not-allowed;border-style:dashed}
+.stepper button:disabled:hover{border-color:var(--line)}
 .stepper button.fin{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
 .stepper button[aria-current="step"]{background:var(--accent);border-color:var(--accent);color:#1E1E1E;box-shadow:0 0 0 4px var(--accent-soft)}
 .stepper button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
@@ -240,7 +242,7 @@ textarea{min-height:88px}
   </header>
 
   <nav class="stepper" id="stepper" aria-label="설문 단계"></nav>
-  <p class="stepper-hint" id="stepperHint">번호를 누르면 해당 단계로 이동합니다</p>
+  <p class="stepper-hint" id="stepperHint">번호를 누르면 해당 단계로 이동합니다 · 앞 단계의 필수 문항을 마치면 다음 번호가 열립니다</p>
   <form id="form" novalidate></form>
   <div id="done" class="done" hidden>
     <div class="mark"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
@@ -487,20 +489,27 @@ form.addEventListener("submit", async e => {
 $("#editAgain").addEventListener("click", () => { $("#done").hidden = true; form.hidden = false; $("#stepper").hidden = false; $("#stepperHint").hidden = false; showStep(0); $("#status").textContent = "수정 후 다시 제출하면 이전 응답을 대체합니다."; });
 
 /* ---------- 단계 이동 ---------- */
+/* 필수 문항이 남은 첫 단계까지만 열림 */
+function firstOpen(a){
+  const k = SECTIONS.findIndex(s => s.items.some(q => q.req && !isAnswered(q,a)));
+  return k === -1 ? SECTIONS.length - 1 : k;
+}
 function stepDone(i, a){ return visited.has(i) && SECTIONS[i].items.every(q => !q.req || isAnswered(q,a)); }
 function renderStepper(a){
   const nav = $("#stepper"); if (!nav) return;
+  const open = firstOpen(a);
   nav.innerHTML = SECTIONS.map((s,i) => {
     const done = stepDone(i, a);
+    const lock = i > open;
     const bar = i ? `<span class="sline${stepDone(i-1, a) ? " fin" : ""}"></span>` : "";
-    return bar + `<button type="button" data-go="${i}" class="${done ? "fin" : ""}" title="${i+1}. ${s.title}" aria-label="${i+1}단계 ${s.title}${done ? " 완료" : ""}"${i === step ? ' aria-current="step"' : ""}>${i+1}</button>`;
+    return bar + `<button type="button" data-go="${i}" class="${done ? "fin" : ""}" title="${i+1}. ${s.title}${lock ? " (앞 단계를 먼저 마쳐 주세요)" : ""}" aria-label="${i+1}단계 ${s.title}${done ? " 완료" : lock ? " 잠김" : ""}"${lock ? " disabled" : ""}${i === step ? ' aria-current="step"' : ""}>${i+1}</button>`;
   }).join("");
 }
 $("#stepper").addEventListener("click", e => {
   const b = e.target.closest("button[data-go]"); if (b) showStep(Number(b.dataset.go));
 });
 function showStep(i, scroll = true){
-  step = Math.max(0, Math.min(i, SECTIONS.length - 1));
+  step = Math.max(0, Math.min(i, SECTIONS.length - 1, firstOpen(readAnswers())));
   visited.add(step); store("visited", JSON.stringify([...visited]));
   form.querySelectorAll("section.sec").forEach(el => { el.hidden = Number(el.dataset.step) !== step; });
   $("#prevBtn").hidden = step === 0;
