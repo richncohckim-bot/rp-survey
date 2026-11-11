@@ -271,6 +271,7 @@ function table(tab) {
   return {
     n: t.rows.length,
     rows: t.rows,
+    has(pre) { return col(pre) >= 0; },
     vals(pre) { const i = col(pre); return i < 0 ? [] : t.rows.map(r => r[i]).filter(v => v !== "" && v != null); },
     count(pre, opts) { const v = this.vals(pre); return opts.map(o => v.filter(x => String(x) === o).length); },
     multi(pre, opts) { const v = this.vals(pre).map(x => String(x).split(" | ")); return opts.map(o => v.filter(a => a.includes(o)).length); },
@@ -317,9 +318,15 @@ function dinnerTally(answers) {
   });
   return [...map.values()].sort((a, b) => b.c - a.c || a.label.localeCompare(b.label, "ko"));
 }
-function renderDinner(answers, n) {
+function renderDinner(answers, n, hasCol) {
   const el = $("#j-dinner");
-  if (!answers.length) { el.innerHTML = '<div class="empty">' + (n ? "23번 응답이 아직 없습니다. Dashboard.gs의 주임단 목록에 '23.'을 넣었는지 확인해 주세요" : "아직 응답이 없습니다") + "</div>"; return; }
+  if (!answers.length) {
+    $("#sub-dinner").textContent = "23번 · 쉼표·줄바꿈으로 나눠 같은 이름끼리 묶음 · 많이 적힌 순";
+    const msg = !n ? "아직 응답이 없습니다"
+      : hasCol ? "연결은 정상입니다. 지금까지 응답 " + n + "건은 모두 23번이 추가되기 전에 제출돼 23번이 비어 있습니다. 새 응답이 들어오면 여기에 나타납니다"
+      : "Apps Script가 23번 열을 보내지 않고 있습니다. Dashboard.gs의 주임단 목록에 '23.'을 넣고 새 버전으로 배포했는지 확인해 주세요";
+    el.innerHTML = '<div class="empty">' + msg + "</div>"; return;
+  }
   const all = dinnerTally(answers), top = all.slice(0, 15);
   $("#sub-dinner").textContent = "23번 · 응답 " + answers.length + "명 · 적힌 이름·팀 " + all.length + "개 · 많이 적힌 순 (1인이 같은 이름을 여러 번 적어도 1회)";
   const max = Math.max(1, ...top.map(x => x.c));
@@ -427,7 +434,7 @@ function render(data) {
   hbars($("#j-ai"), AI, J.count("17.", AI), J.n, "var(--juim)");
   hbars($("#j-law"), LAW, J.multi("16. 준법", LAW), J.n, "var(--juim)", { sort: true, share: true });
   hbars($("#j-case"), ["있음", "없음"], J.count("19.", ["있음", "없음"]), J.n, "var(--juim)");
-  renderDinner(J.vals("23."), J.n);
+  renderDinner(J.vals("23."), J.n, J.has("23."));
   meanBars($("#j-work"), WORK, WORK.map((_, i) => J.mean("11-" + (i + 1) + ".")), "var(--juim)");
   hbars($("#j-need"), NEED, J.multi("12. 가장", NEED), J.n, "var(--juim)", { sort: true, share: true });
 
