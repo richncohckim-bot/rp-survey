@@ -320,6 +320,11 @@ const SECTIONS = [
   {title:"회사에 기대하는 것", items:[
     {id:"q18", no:"21", type:"text", label:"이번 워크숍에 바라는 점"},
     {id:"q22", no:"22", type:"text", label:"앞으로 회사에 바라는 점"}
+  ]},
+  {title:"1일차 저녁 소통의 시간", items:[
+    {id:"q23", no:"23", type:"text", label:"저녁 식사 자리에서 함께하고 싶은 본사 직원이나 팀을 꼭 적어 주세요", hint:"사람 이름, 팀 이름 모두 좋습니다. 평소 업무로 자주 연락하는 담당자, 얼굴 보고 인사하고 싶은 팀 등", req:true, bans:[
+      {re:/김\s*현\s*철/, msg:"김현철은 이미 그 자리에 있습니다. 다른 사람을 적어 주세요!"},
+      {re:/hr|인사\s*팀/i, msg:"전략HR팀은 이미 그 자리에 있습니다. 다른 팀을 적어 주세요!"}]}
   ]}
 ];
 
@@ -425,10 +430,12 @@ function fillAnswers(a){
     }
   }
 }
+function banHit(q, v){ return q.bans && typeof v === "string" && v ? q.bans.find(b => b.re.test(v)) : null; }
 function isAnswered(q, a){
   const v = a[q.id];
   if (q.type === "check") return v.length > 0 && !(v.includes(ETC) && !a[q.id+"_etc"]);
   if (q.type === "grid") return v.every(n => n > 0);
+  if (banHit(q, v)) return false;
   return !!v;
 }
 function updateProgress(){
@@ -437,6 +444,7 @@ function updateProgress(){
   $("#progText").textContent = `${step+1} / ${SECTIONS.length} 단계`;
   $("#progBar").style.width = ((step+1) / SECTIONS.length * 100) + "%";
   for (const q of REQ){ if (isAnswered(q,a)) clearErr(q.id); }
+  for (const q of ITEMS){ const b = banHit(q, a[q.id]); const m = $("#wrap-"+q.id).querySelector(".errmsg"); if (b){ if (!m || m.textContent !== b.msg){ clearErr(q.id); markErr(q,a); } } else if (m && q.bans && q.bans.some(x => x.msg === m.textContent)) clearErr(q.id); }
   for (const q of ITEMS){ $("#wrap-"+q.id).classList.toggle("ok", isAnswered(q,a)); }
   renderStepper(a);
   store("draft", JSON.stringify(a));
@@ -451,7 +459,7 @@ function markErr(q, a){
   w.classList.add("err");
   if (!w.querySelector(".errmsg")){
     const m = document.createElement("div"); m.className = "errmsg";
-    m.textContent = q.type === "grid" ? "모든 항목에 응답해 주세요." : q.type === "check" && a[q.id].includes(ETC) ? "기타 내용을 입력해 주세요." : "필수 문항입니다.";
+    m.textContent = banHit(q, a[q.id]) ? banHit(q, a[q.id]).msg : q.type === "grid" ? "모든 항목에 응답해 주세요." : q.type === "check" && a[q.id].includes(ETC) ? "기타 내용을 입력해 주세요." : "필수 문항입니다.";
     w.appendChild(m);
   }
   if (q.type === "grid") a[q.id].forEach((n,i) => { if (!n) $(`#${q.id}-row${i}`).classList.add("miss"); });
