@@ -308,21 +308,19 @@ const SECTIONS = [
     {id:"q8", no:"15", type:"text", label:"이 문제로 실제 발생하는 상황(사례)을 적어주세요"}
   ]},
   {title:"교육 수요", items:[
-    {id:"q9", no:"16", type:"check", label:"준법·컴플라이언스 관련해 더 알고 싶은 주제", hint:"복수 선택", other:true, groups:[
-      {options:["개인정보보호","불완전판매·설명의무","모집 질서(부당승환 등)","금융소비자보호법","수수료 관련 규정"]}]},
-    {id:"q10", no:"17", type:"radio", label:"생성형 AI(ChatGPT, Claude 등) 업무 활용 수준", req:true, options:["써본 적 없음","개인적으로만 사용","가끔 업무에 활용","자주 업무에 활용"]},
-    {id:"q11", no:"18", type:"text", label:"AI로 도움받고 싶은 업무가 있다면 적어주세요"}
+    {id:"q10", no:"16", type:"radio", label:"생성형 AI(ChatGPT, Claude 등) 업무 활용 수준", req:true, options:["써본 적 없음","개인적으로만 사용","가끔 업무에 활용","자주 업무에 활용"]},
+    {id:"q11", no:"17", type:"text", label:"AI로 도움받고 싶은 업무가 있다면 적어주세요"}
   ]},
   {title:"사례 공유", items:[
-    {id:"q12", no:"19", type:"radio", label:"동료에게 공유할 만한 업무 노하우나 AI 활용 사례가 있나요?", cols:true, options:["있음","없음"]},
-    {id:"q13", no:"20", type:"text", label:"(있다면) 간단히 소개해 주세요", hint:"발표 의향이 있으면 전략HR팀으로 별도 연락 부탁드립니다"}
+    {id:"q12", no:"18", type:"radio", label:"동료에게 공유할 만한 업무 노하우나 AI 활용 사례가 있나요?", cols:true, options:["있음","없음"]},
+    {id:"q13", no:"19", type:"text", label:"(있다면) 간단히 소개해 주세요", hint:"발표 의향이 있으면 전략HR팀으로 별도 연락 부탁드립니다"}
   ]},
   {title:"회사에 기대하는 것", items:[
-    {id:"q18", no:"21", type:"text", label:"이번 워크숍에 바라는 점"},
-    {id:"q22", no:"22", type:"text", label:"앞으로 회사에 바라는 점"}
+    {id:"q18", no:"20", type:"text", label:"이번 워크숍에 바라는 점"},
+    {id:"q22", no:"21", type:"text", label:"앞으로 회사에 바라는 점"}
   ]},
   {title:"1일차 저녁 소통의 시간", items:[
-    {id:"q23", no:"23", type:"text", label:"저녁 식사 자리에서 함께하고 싶은 본사 직원이나 팀을 꼭 적어 주세요", hint:"사람 이름, 팀 이름 모두 좋습니다. 평소 업무로 자주 연락하는 담당자, 얼굴 보고 인사하고 싶은 팀 등", req:true, bans:[
+    {id:"q23", no:"22", type:"text", label:"저녁 식사 자리에서 함께하고 싶은 본사 직원이나 팀을 꼭 적어 주세요", hint:"사람 이름, 팀 이름 모두 좋습니다. 평소 업무로 자주 연락하는 담당자, 얼굴 보고 인사하고 싶은 팀 등", req:true, bans:[
       {re:/김\s*현\s*철/, msg:"김현철은 이미 그 자리에 있습니다. 다른 사람을 적어 주세요!"},
       {re:/hr|인사\s*팀/i, msg:"전략HR팀은 이미 그 자리에 있습니다. 다른 팀을 적어 주세요!"}]}
   ]}
